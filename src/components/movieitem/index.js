@@ -25,7 +25,6 @@ export default function MovieItem ({ movie, genres }) {
 }
 
 const MovieItemWrapper = styled.div`
-border: 1px solid red;
   position: relative;
   background-color: white;
   border-radius: 5px;
