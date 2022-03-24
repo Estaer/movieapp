@@ -3,7 +3,8 @@ import styled from 'styled-components';
 
 import * as colors from "../../colors";
 
-import { getPopularMovies, getAllGenres } from "../../fetcher";
+import { getMovieCount, getPopularMovies, getAllGenres, searchAllMovies } from "../../fetcher";
+import useDebounce  from '../../debounce';
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
@@ -24,16 +25,44 @@ const languages =  [
 ]
 
 const Discover = () => {
-  const [results, setResults] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [genreOptions, setGenreOptions] = useState([]);
-  const [ratingOptions, setRatingOptions] = useState(ratings);
-  const [languageOptions, setLanguageOptions] = useState(languages);
+    const [keyword, setKeyword] = useState('');
+    const [year, setYear] = useState(0);
+    const [results, setResults] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [genreOptions, setGenreOptions] = useState([]);
+    const [ratingOptions, setRatingOptions] = useState(ratings);
+    const [languageOptions, setLanguageOptions] = useState(languages);
+    const [isSearching, setIsSearching] = useState(false);
+
+    const debouncedKeyword = useDebounce(keyword, 800);
+    useEffect(
+        () => {
+            if (debouncedKeyword) {
+                setIsSearching(true);
+
+                if(debouncedKeyword !== ''){
+                    async function fetchDebouncedResults(){
+                        let data = await searchAllMovies(debouncedKeyword);
+                        setIsSearching(false);
+                        setResults(data.results);
+                        setTotalCount(data.total_results);
+                    }
+                    fetchDebouncedResults();
+                }
+            } else{
+                getPopularMovies();
+            }
+        },
+        [debouncedKeyword]
+    );
 
   useEffect(() => {
     const initialFetch = async () => {
         const results = await getPopularMovies()
         setResults(results)
+
+        const count = await getMovieCount()
+        setTotalCount(count)
 
         const genreOptions = await getAllGenres()
         setGenreOptions(genreOptions)
@@ -41,20 +70,37 @@ const Discover = () => {
     initialFetch()
   }, [])
 
-  // TODO: Preload and set the popular movies and movie genres when page loads
-
-  // TODO: Update search results based on the keyword and year inputs
-
+    const searchKeyword = async (keywordValue) => {
+        setKeyword(keywordValue)
+        if(keywordValue){
+            const searchResults = await searchAllMovies(keywordValue, year)
+            setResults(searchResults.results)
+            setTotalCount(searchResults.total_count)
+        }
+    }
+    const searchYear = async (yearValue) => {
+        setYear(yearValue)
+        if(yearValue && keyword){
+            const searchResults = await searchAllMovies(keyword, yearValue)
+            setResults(searchResults.results)
+        }
+    }
 
   return (
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle> {/* MobilePageTitle should become visible on mobile devices via CSS media queries*/}
-      <TotalCount>{totalCount} results</TotalCount>
+        {!isSearching &&
+            <TotalCount>{totalCount} results</TotalCount>
+        }
       <MovieFilters>
         <SearchFilters
           genres={genreOptions}
           ratings={ratingOptions}
           languages={languageOptions}
+          searchKeyword={(keyword) => searchKeyword(keyword)}
+          keyword = {keyword}
+          searchYear={(year)=> searchYear(year)}
+          year={year}
         />
       </MovieFilters>
       <MovieResults>
