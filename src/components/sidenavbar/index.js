@@ -1,37 +1,45 @@
 import React, { useState } from "react";
 import styled, { css } from 'styled-components';
 import { NavLink as Link } from "react-router-dom";
+import {devices} from "../../devices";
 
 import * as colors from "../../colors";
 import Arrow from "../../images/arrow-icon.png";
 import SearchWhite from "../../images/search-icon-white.png";
+import HamburgerIcon from "../../images/hamburger-menu.png"
 
 export default function SideNavBar () {
   const [isOpen, setIsOpen] = useState(false);
   /* TODO: Write the necessary functions to open and close the sidebar */
+    return (
+        <div className="sideNavBar">
+            <Hamburger onClick = {()=>{ setIsOpen(!isOpen)}} >
+                <img src={HamburgerIcon}/>
+            </Hamburger>
+            {/*{ isOpen &&*/}
+            <SideNavBarCont isOpen={isOpen} className={isOpen ? 'visible' : ''} >
+                {/* TODO: Implement a hamburger icon that controls the open state of the sidebar. This control should only be visible on mobile devices via CSS media queries */}
+                {/* The sidebar should slide in from left */}
 
-  return (
-    <SideNavBarCont className={isOpen ? 'visible' : ''}>
-      {/* TODO: Implement a hamburger icon that controls the open state of the sidebar. This control should only be visible on mobile devices via CSS media queries */}
-      {/* The sidebar should slide in from left */}
-      <SideNavHeader>
-        Wesley
-        <img src={Arrow} alt="Arrow pointing down" />
-      </SideNavHeader>
-      <SideNavMainLink to="/discover" exact>
-        Discover
-        <img src={SearchWhite} alt="Magnifying glass" />
-      </SideNavMainLink>
-      <SideNavSectionTitle><HeaderText>Watched</HeaderText></SideNavSectionTitle>
-      <NavLink to="/watched/movies">Movies</NavLink>
-      <NavLink to="/watched/tv-shows">Tv Shows</NavLink>
-      <SideNavSectionTitle><HeaderText>Saved</HeaderText></SideNavSectionTitle>
-      <NavLink to="/saved/movies">Movies</NavLink>
-      <NavLink to="/saved/tv-shows">Tv Shows</NavLink>
-    </SideNavBarCont>
+                <SideNavHeader isOpen={isOpen}>
+                    Wesley
+                    <img src={Arrow} alt="Arrow pointing down" />
+                </SideNavHeader>
+                <SideNavMainLink to="/discover" exact>
+                    Discover
+                    <img src={SearchWhite} alt="Magnifying glass" />
+                </SideNavMainLink>
+                <SideNavSectionTitle><HeaderText>Watched</HeaderText></SideNavSectionTitle>
+                <NavLink to="/watched/movies">Movies</NavLink>
+                <NavLink to="/watched/tv-shows">Tv Shows</NavLink>
+                <SideNavSectionTitle><HeaderText>Saved</HeaderText></SideNavSectionTitle>
+                <NavLink to="/saved/movies">Movies</NavLink>
+                <NavLink to="/saved/tv-shows">Tv Shows</NavLink>
+            </SideNavBarCont>
+            {/*}*/}
+        </div>
   );
 }
-
 const SideNavBarCont = styled.div`
   position: fixed;
   z-index: 9;
@@ -39,6 +47,14 @@ const SideNavBarCont = styled.div`
   height: 100%;
   background-color: ${colors.sideNavBar};
   color: white;
+
+  // @media ${devices.mobileL}{
+  //   display:none;
+  //   &.visible {
+  //     display:unset;
+  //   }
+  }
+
 `
 
 const SectionsStyles = css`
@@ -95,4 +111,15 @@ const NavLink = styled(Link)`
     background: ${colors.primaryColor};
     opacity: 1;
   }
+`
+const Hamburger = styled.div`
+  position: fixed;
+  z-index: 10;
+  top: ${props => props.isOpen ? '5px' : '32px'};
+  left: ${props => props.isOpen ? '5px' : '30px'};
+  padding: 0;
+  display: none;
+  // @media ${devices.mobileM}{
+  //   display: unset;
+  // }
 `

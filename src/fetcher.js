@@ -18,7 +18,6 @@ const getMovieCount = async () =>{
 const getPopularMovies = async () =>{
     return await axios.get(`${BASE_URL}movie/popular?api_key=${API_KEY}`)
         .then((response) => {
-            console.log(response.data.results, 'reshgfdssdf')
             return response.data.results
         })
         .catch(error => {

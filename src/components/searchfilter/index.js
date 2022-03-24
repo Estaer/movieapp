@@ -4,7 +4,7 @@ import styled, { css } from 'styled-components';
 import * as colors from "../../colors";
 import AccordionFilter from "../accordionfilter";
 import SearchBar from "../../components/searchbar";
-
+import {devices} from "../../devices";
 import SearchIcon from "../../images/search-icon-yellow.png";
 import YearIcon from "../../images/year-icon.png";
 
@@ -29,7 +29,7 @@ export default function SearchFilters({ genres, ratings, languages, keyword, sea
           value = {year}
         />
       </SearchFiltersCont>
-      <SearchFiltersCont>
+      <SearchFiltersCont className="movie_filter">
           <CategoryTitle>Movies</CategoryTitle>
           <AccordionFilter title="genre (s)" itemsList={genres} />
           <AccordionFilter title="min. vote" itemsList={ratings} />
@@ -49,6 +49,11 @@ const SearchFiltersCont = styled.div`
   border-radius: 5px;
   transition: all .3s ease-in-out;
 
+  @media ${devices.mobileL}{
+    width: 100%;
+  }
+
+
   .search_bar_wrapper:first-child {
     margin-bottom: 15px;
   }
@@ -56,6 +61,11 @@ const SearchFiltersCont = styled.div`
   ${props => props.marginBottom && css`
     margin-bottom: 15px;
   `}
+  &.movie_filter{
+    @media ${devices.mobileL}{
+      display: none;
+    }
+  }
 `
 
 const CategoryTitle = styled.h3`

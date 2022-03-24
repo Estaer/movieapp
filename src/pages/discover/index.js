@@ -8,6 +8,7 @@ import useDebounce  from '../../debounce';
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
+import {devices} from '../../devices';
 
 const ratings = [
     { id: 7.5, name: 7.5 },
@@ -122,12 +123,20 @@ const DiscoverWrapper = styled.main`
 const MovieResults = styled.div`
   display: inline-block;
   width: calc(100% - 295px);
+
+  @media ${devices.mobileL}{
+    width: 100%;
+  }
 `
 
 const MovieFilters = styled.div`
   width: 280px;
   float: right;
   margin-top: 15px;
+
+  @media ${devices.mobileL}{
+    float: left;
+  }
 `
 
 const MobilePageTitle = styled.h1`

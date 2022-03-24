@@ -3,10 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import styled from 'styled-components';
 
 import SideNavBar from "./components/sidenavbar";
-
+import {devices} from "./devices";
 import Discover from "./pages/discover";
 
-import './css/app.scss'; 
+import './css/app.scss';
 
 export default class App extends React.Component {
   render () {
@@ -28,6 +28,11 @@ export default class App extends React.Component {
 
 const ContentWrapper = styled.main`
   padding-left: 280px;
+
+  @media ${devices.mobileL}{
+    padding-left: 0px;
+    width: 100%;
+  }
 `
 
 const PageContainer = styled.main`
