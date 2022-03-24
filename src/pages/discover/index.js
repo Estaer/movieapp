@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import * as colors from "../../colors";
 
 import { getPopularMovies, getAllGenres, searchAllMovies } from "../../fetcher";
+import useDebounce  from '../../debounce';
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
@@ -31,6 +32,28 @@ const Discover = () => {
     const [genreOptions, setGenreOptions] = useState([]);
     const [ratingOptions, setRatingOptions] = useState(ratings);
     const [languageOptions, setLanguageOptions] = useState(languages);
+    const [isSearching, setIsSearching] = useState(false);
+
+    const debouncedKeyword = useDebounce(keyword, 1000);
+    useEffect(
+        () => {
+            if (debouncedKeyword) {
+                setIsSearching(true);
+
+                if(debouncedKeyword !== ''){
+                    async function fetchDebouncedResults(){
+                        let data = await searchAllMovies(debouncedKeyword);
+                        setIsSearching(false);
+                        setResults(data);
+                    }
+                    fetchDebouncedResults();
+                }
+            } else{
+                getPopularMovies();
+            }
+        },
+        [debouncedKeyword]
+    );
 
   useEffect(() => {
     const initialFetch = async () => {

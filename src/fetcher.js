@@ -29,8 +29,8 @@ const getAllGenres = async () =>{
         });
 };
 
-const searchAllMovies = async (keyword, year) => {
-    return await axios.get(`${BASE_URL}search/movie?api_key=${API_KEY}&query=${keyword}&year=${year}`)
+const searchAllMovies = async (debouncedKeyword, year) => {
+    return await axios.get(`${BASE_URL}search/movie?api_key=${API_KEY}&query=${debouncedKeyword}&year=${year}`)
         .then((response) => {
             console.log(response.data.results, 'Search results ===')
             return response.data.results
