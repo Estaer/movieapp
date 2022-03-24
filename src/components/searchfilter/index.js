@@ -26,7 +26,7 @@ export default function SearchFilters({ genres, ratings, languages, onSearch }) 
         />
       </SearchFiltersCont>
       <SearchFiltersCont>
-        <CategoryTitle>Movies</CategoryTitle>
+          <CategoryTitle>Movies</CategoryTitle>
           <AccordionFilter title="genre (s)" itemsList={genres} />
           <AccordionFilter title="min. vote" itemsList={ratings} />
           <AccordionFilter title="Language" itemsList={languages} />

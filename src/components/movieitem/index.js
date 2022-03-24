@@ -6,16 +6,6 @@ import { primaryColor } from '../../colors'
 
 export default function MovieItem ({ movie, genres }) {
 
-    // let ids = movie.genre_ids
-    //
-    // const getGenreNames = (ids) => {
-    //   let namesArray = genres.filter( genre => ids.includes(genre.id))
-    //     // return namesArray.map((result)=>{result.name})
-    //   }
-    //
-    //     // return namesArray.join(" | ")
-    // }
-
     const getGenreNames = (ids) =>{
         const namesArray = ids.map(id=>{
             return genres.filter(genre=>genre.id===id)[0]?.name
@@ -64,7 +54,7 @@ const LeftCont = styled.div`
 `
 
 const RightCont = styled.div`
-  padding: 0px 20px 20px 20px ;
+  padding: 0px 0px 20px 20px ;
 `
 
 const Overview = styled.div`
@@ -74,7 +64,8 @@ const Overview = styled.div`
 const ReleaseDate = styled.h5`
   display: inline-block;
   color:${primaryColor};
-  margin-bottom: auto;
+  position: absolute;
+  bottom: 0;
   font-size:12px;
   font-weight: 300;
 `
@@ -92,18 +83,19 @@ const VoteAverage = styled.div`
   font-weight: 600;
   text-align: center;
   margin-left: auto;
-  margin-right: 20px;
 `
 const Genres = styled.div`
   color:${primaryColor};
   font-size:13px;
   font-weight: 600;
+  padding-top: 5px ;
+  padding-bottom: 5px ;
 
 `
 
 const Title = styled.h2`
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 800;
   margin:0px;
   padding:0px;
 `;

@@ -12,12 +12,12 @@ export default function AccordionFilter (props) {
 
     return(
         <Wrapper>
-            <div onClick={() => setIsOpen(!isOpen)}>
-                <Title fontSize="18px" >
-                    {isOpen? <img src={MinusIcon} alt="minus" /> : <img src={PlusIcon} alt="plus" /> }
+            <TitleCont onClick={() => setIsOpen(!isOpen)}>
+                <Title fontSize="16px" >
+                    {isOpen? <StyledIcon src={MinusIcon} alt="minus" width = "10px"/> : <StyledIcon src={PlusIcon} alt="plus" width="15px" height="15px"/> }
                     {" "} Select {title}
                 </Title>
-            </div>
+            </TitleCont>
 
             {isOpen && itemsList.map(item =>(
                 <Checkbox key={item.id} id={item.id} name={item.name} label={item.name}/>
@@ -31,8 +31,20 @@ const Title = styled.p`
   cursor: pointer;
   margin-left: 5px;
   font-weight: 450;
+  margin: 10px 0;
 `;
+
+const StyledIcon = styled.img`
+  width: ${props=>props.width};
+  height: ${props=>props.height};
+  src:${props=>props.src};
+`
 
 const Wrapper = styled.div`
     width: 100%;
 `;
+
+const TitleCont = styled.div`
+  display: inline-flex;
+  align-items: center;
+`
