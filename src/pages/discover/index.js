@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import * as colors from "../../colors";
 
-import { getPopularMovies, getAllGenres } from "../../fetcher";
+import { getPopularMovies, getAllGenres, searchAllMovies } from "../../fetcher";
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
@@ -24,11 +24,13 @@ const languages =  [
 ]
 
 const Discover = () => {
-  const [results, setResults] = useState([]);
-  const [totalCount, setTotalCount] = useState(0);
-  const [genreOptions, setGenreOptions] = useState([]);
-  const [ratingOptions, setRatingOptions] = useState(ratings);
-  const [languageOptions, setLanguageOptions] = useState(languages);
+    const [keyword, setKeyword] = useState('');
+    const [year, setYear] = useState(0);
+    const [results, setResults] = useState([]);
+    const [totalCount, setTotalCount] = useState(0);
+    const [genreOptions, setGenreOptions] = useState([]);
+    const [ratingOptions, setRatingOptions] = useState(ratings);
+    const [languageOptions, setLanguageOptions] = useState(languages);
 
   useEffect(() => {
     const initialFetch = async () => {
@@ -40,6 +42,25 @@ const Discover = () => {
     }
     initialFetch()
   }, [])
+
+    const searchKeyword = async (keywordValue) => {
+        setKeyword(keywordValue)
+        if(keywordValue){
+            const searchResults = await searchAllMovies(keywordValue, year)
+            setResults(searchResults)
+            console.log(searchResults, keywordValue)
+        }
+    }
+    const searchYear = async (yearValue) => {
+        setYear(yearValue)
+        if(yearValue && keyword){
+            const searchResults = await searchAllMovies(keyword, yearValue)
+            setResults(searchResults)
+            console.log(searchResults, yearValue)
+        }
+    }
+
+
 
   // TODO: Preload and set the popular movies and movie genres when page loads
 
@@ -55,6 +76,10 @@ const Discover = () => {
           genres={genreOptions}
           ratings={ratingOptions}
           languages={languageOptions}
+          searchKeyword={(keyword) => searchKeyword(keyword)}
+          keyword = {keyword}
+          searchYear={(year)=> searchYear(year)}
+          year={year}
         />
       </MovieFilters>
       <MovieResults>

@@ -8,7 +8,7 @@ import SearchBar from "../../components/searchbar";
 import SearchIcon from "../../images/search-icon-yellow.png";
 import YearIcon from "../../images/year-icon.png";
 
-export default function SearchFilters({ genres, ratings, languages, onSearch }) {
+export default function SearchFilters({ genres, ratings, languages, keyword, searchKeyword, year, searchYear }) {
   return (
     <FiltersWrapper>
       <SearchFiltersCont className="search_inputs_cont" marginBottom>
@@ -17,12 +17,16 @@ export default function SearchFilters({ genres, ratings, languages, onSearch }) 
           type="text"
           icon={{ src: SearchIcon, alt: 'Magnifying glass' }}
           placeholder="Search for movies"
+          onChange = {searchKeyword}
+          value = {keyword}
         />
         <SearchBar
           id="year_search_input"
           type="number"
           icon={{ src: YearIcon, alt: 'Calendar icon' }}
           placeholder="Year of release"
+          onChange = {searchYear}
+          value = {year}
         />
       </SearchFiltersCont>
       <SearchFiltersCont>
