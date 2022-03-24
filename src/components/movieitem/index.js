@@ -5,22 +5,31 @@ import {IMAGE_BASE_URL} from '../../constants'
 import { primaryColor } from '../../colors'
 
 export default function MovieItem ({ movie, genres }) {
+
+    const getGenreNames = (ids) =>{
+        const namesArray = ids.map(id=>{
+            return genres.filter(genre=>genre.id===id)[0]?.name
+        })
+        return namesArray.join(" | ")
+    }
+
   return (
-    // TODO: Complete the MovieItem component
-    <MovieItemWrapper>
-        <LeftCont>
-            <img src={`${IMAGE_BASE_URL}${movie.poster_path}`}/>
-        </LeftCont>
-        <RightCont>
-            <TitleCont>
-                <Title>{movie.title}</Title>
-                <VoteAverage>{movie.vote_average}</VoteAverage>
-            </TitleCont>
-            <Genres>{genres}</Genres>
-            <Overview>{movie.overview}</Overview>
-            <ReleaseDate>{movie.release_date}</ReleaseDate>
-        </RightCont>
-    </MovieItemWrapper>
+      // TODO: Complete the MovieItem component
+
+      <MovieItemWrapper>
+          <LeftCont>
+              <img src={`${IMAGE_BASE_URL}${movie.poster_path}`}/>
+          </LeftCont>
+          <RightCont>
+              <TitleCont>
+                  <Title>{movie.title}</Title>
+                  <VoteAverage>{movie.vote_average}</VoteAverage>
+              </TitleCont>
+              <Genres>{getGenreNames(movie.genre_ids)}</Genres>
+              <Overview>{movie.overview}</Overview>
+              <ReleaseDate>{movie.release_date}</ReleaseDate>
+          </RightCont>
+      </MovieItemWrapper>
   )
 }
 
@@ -37,29 +46,26 @@ const MovieItemWrapper = styled.div`
 .auto { line-break: auto; }
 `
 
-const Wrapper = styled.div`
-  
-`
-
-const LeftCont = styled(Wrapper)`
+const LeftCont = styled.div`
   img{
     max-height: 200px;
     object-fit: cover;
   }
 `
 
-const RightCont = styled(Wrapper)`
-  padding: 0px 20px 20px 20px ;
+const RightCont = styled.div`
+  padding: 0px 0px 20px 20px ;
 `
 
-const Overview = styled(Wrapper)`
+const Overview = styled.div`
   font-size: 15px
 `
 
 const ReleaseDate = styled.h5`
   display: inline-block;
   color:${primaryColor};
-  margin-bottom: auto;
+  position: absolute;
+  bottom: 0;
   font-size:12px;
   font-weight: 300;
 `
@@ -77,23 +83,24 @@ const VoteAverage = styled.div`
   font-weight: 600;
   text-align: center;
   margin-left: auto;
-  margin-right: 20px;
 `
-const Genres = styled(Wrapper)`
+const Genres = styled.div`
   color:${primaryColor};
   font-size:13px;
   font-weight: 600;
+  padding-top: 5px ;
+  padding-bottom: 5px ;
 
 `
 
 const Title = styled.h2`
-  font-size: 25px;
-  font-weight: 600;
+  font-size: 24px;
+  font-weight: 800;
   margin:0px;
   padding:0px;
 `;
 
-const TitleCont = styled(Wrapper)`
+const TitleCont = styled.div`
   display: flex;
   flex-direction: row;
   margin-left: auto;

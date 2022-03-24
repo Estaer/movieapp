@@ -18,4 +18,15 @@ const getPopularMovies = async () =>{
         });
 };
 
-export { getPopularMovies };
+const getAllGenres = async () =>{
+    return await axios.get(`${BASE_URL}genre/movie/list?api_key=${API_KEY}`)
+        .then((response) => {
+            return response.data.genres
+        })
+        .catch(error => {
+            console.error(`Error: ${error}`)
+            return []
+        });
+};
+
+export { getPopularMovies, getAllGenres };

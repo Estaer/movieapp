@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import * as colors from "../../colors";
 
-import { getPopularMovies } from "../../fetcher";
+import { getPopularMovies, getAllGenres } from "../../fetcher";
 
 import SearchFilters from "../../components/searchfilter";
 import MovieList from "../../components/movielist";
@@ -24,8 +24,6 @@ const languages =  [
 ]
 
 const Discover = () => {
-  const [keyword, setKeyword] = useState('');
-  const [year, setYear] = useState(0);
   const [results, setResults] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
   const [genreOptions, setGenreOptions] = useState([]);
@@ -34,8 +32,11 @@ const Discover = () => {
 
   useEffect(() => {
     const initialFetch = async () => {
-      const results = await getPopularMovies()
-      setResults(results)
+        const results = await getPopularMovies()
+        setResults(results)
+
+        const genreOptions = await getAllGenres()
+        setGenreOptions(genreOptions)
     }
     initialFetch()
   }, [])
@@ -54,7 +55,6 @@ const Discover = () => {
           genres={genreOptions}
           ratings={ratingOptions}
           languages={languageOptions}
-          searchMovies={(keyword, year) => this.searchMovies(keyword, year)}
         />
       </MovieFilters>
       <MovieResults>
