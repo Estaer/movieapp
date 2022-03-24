@@ -5,22 +5,41 @@ import {IMAGE_BASE_URL} from '../../constants'
 import { primaryColor } from '../../colors'
 
 export default function MovieItem ({ movie, genres }) {
+
+    // let ids = movie.genre_ids
+    //
+    // const getGenreNames = (ids) => {
+    //   let namesArray = genres.filter( genre => ids.includes(genre.id))
+    //     // return namesArray.map((result)=>{result.name})
+    //   }
+    //
+    //     // return namesArray.join(" | ")
+    // }
+
+    const getGenreNames = (ids) =>{
+        const namesArray = ids.map(id=>{
+            return genres.filter(genre=>genre.id===id)[0]?.name
+        })
+        return namesArray.join(" | ")
+    }
+
   return (
-    // TODO: Complete the MovieItem component
-    <MovieItemWrapper>
-        <LeftCont>
-            <img src={`${IMAGE_BASE_URL}${movie.poster_path}`}/>
-        </LeftCont>
-        <RightCont>
-            <TitleCont>
-                <Title>{movie.title}</Title>
-                <VoteAverage>{movie.vote_average}</VoteAverage>
-            </TitleCont>
-            <Genres>{genres}</Genres>
-            <Overview>{movie.overview}</Overview>
-            <ReleaseDate>{movie.release_date}</ReleaseDate>
-        </RightCont>
-    </MovieItemWrapper>
+      // TODO: Complete the MovieItem component
+
+      <MovieItemWrapper>
+          <LeftCont>
+              <img src={`${IMAGE_BASE_URL}${movie.poster_path}`}/>
+          </LeftCont>
+          <RightCont>
+              <TitleCont>
+                  <Title>{movie.title}</Title>
+                  <VoteAverage>{movie.vote_average}</VoteAverage>
+              </TitleCont>
+              <Genres>{getGenreNames(movie.genre_ids)}</Genres>
+              <Overview>{movie.overview}</Overview>
+              <ReleaseDate>{movie.release_date}</ReleaseDate>
+          </RightCont>
+      </MovieItemWrapper>
   )
 }
 
@@ -37,22 +56,18 @@ const MovieItemWrapper = styled.div`
 .auto { line-break: auto; }
 `
 
-const Wrapper = styled.div`
-  
-`
-
-const LeftCont = styled(Wrapper)`
+const LeftCont = styled.div`
   img{
     max-height: 200px;
     object-fit: cover;
   }
 `
 
-const RightCont = styled(Wrapper)`
+const RightCont = styled.div`
   padding: 0px 20px 20px 20px ;
 `
 
-const Overview = styled(Wrapper)`
+const Overview = styled.div`
   font-size: 15px
 `
 
@@ -79,7 +94,7 @@ const VoteAverage = styled.div`
   margin-left: auto;
   margin-right: 20px;
 `
-const Genres = styled(Wrapper)`
+const Genres = styled.div`
   color:${primaryColor};
   font-size:13px;
   font-weight: 600;
@@ -93,7 +108,7 @@ const Title = styled.h2`
   padding:0px;
 `;
 
-const TitleCont = styled(Wrapper)`
+const TitleCont = styled.div`
   display: flex;
   flex-direction: row;
   margin-left: auto;
