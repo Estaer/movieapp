@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import * as colors from "../../colors";
 
-import { getPopularMovies, getAllGenres, searchAllMovies } from "../../fetcher";
+import { getMovieCount, getPopularMovies, getAllGenres, searchAllMovies } from "../../fetcher";
 import useDebounce  from '../../debounce';
 
 import SearchFilters from "../../components/searchfilter";
@@ -34,7 +34,7 @@ const Discover = () => {
     const [languageOptions, setLanguageOptions] = useState(languages);
     const [isSearching, setIsSearching] = useState(false);
 
-    const debouncedKeyword = useDebounce(keyword, 1000);
+    const debouncedKeyword = useDebounce(keyword, 800);
     useEffect(
         () => {
             if (debouncedKeyword) {
@@ -44,7 +44,8 @@ const Discover = () => {
                     async function fetchDebouncedResults(){
                         let data = await searchAllMovies(debouncedKeyword);
                         setIsSearching(false);
-                        setResults(data);
+                        setResults(data.results);
+                        setTotalCount(data.total_results);
                     }
                     fetchDebouncedResults();
                 }
@@ -60,6 +61,9 @@ const Discover = () => {
         const results = await getPopularMovies()
         setResults(results)
 
+        const count = await getMovieCount()
+        setTotalCount(count)
+
         const genreOptions = await getAllGenres()
         setGenreOptions(genreOptions)
     }
@@ -70,30 +74,24 @@ const Discover = () => {
         setKeyword(keywordValue)
         if(keywordValue){
             const searchResults = await searchAllMovies(keywordValue, year)
-            setResults(searchResults)
-            console.log(searchResults, keywordValue)
+            setResults(searchResults.results)
+            setTotalCount(searchResults.total_count)
         }
     }
     const searchYear = async (yearValue) => {
         setYear(yearValue)
         if(yearValue && keyword){
             const searchResults = await searchAllMovies(keyword, yearValue)
-            setResults(searchResults)
-            console.log(searchResults, yearValue)
+            setResults(searchResults.results)
         }
     }
-
-
-
-  // TODO: Preload and set the popular movies and movie genres when page loads
-
-  // TODO: Update search results based on the keyword and year inputs
-
 
   return (
     <DiscoverWrapper>
       <MobilePageTitle>Discover</MobilePageTitle> {/* MobilePageTitle should become visible on mobile devices via CSS media queries*/}
-      <TotalCount>{totalCount} results</TotalCount>
+        {!isSearching &&
+            <TotalCount>{totalCount} results</TotalCount>
+        }
       <MovieFilters>
         <SearchFilters
           genres={genreOptions}
