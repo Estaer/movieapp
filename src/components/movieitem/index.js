@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import {IMAGE_BASE_URL} from '../../constants'
 import { primaryColor } from '../../colors'
+import {devices} from '../../devices';
 
 export default function MovieItem ({ movie, genres }) {
 
@@ -42,6 +43,10 @@ const MovieItemWrapper = styled.div`
   flex-direction: row;
   .wrapbox { width: 10em; margin: 0.5em; white-space: normal; vertical-align: top; display: inline-block; }
 .auto { line-break: auto; }
+
+  @media ${devices.mobileL}{
+    width: 100%;
+  }
 `
 
 const LeftCont = styled.div`
